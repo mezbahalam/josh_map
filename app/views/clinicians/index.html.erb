@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+
+<%= form_tag clinicians_path, method: :get do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search Near", :name => nil %>
+  </p>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clinicians.each do |clinician| %>
+      <tr>
+        <td><%= clinician.address %></td>
+        <td><%= clinician.latitude %></td>
+        <td><%= clinician.longitude %></td>
+        <td><%= link_to 'Show', clinician %></td>
+        <td><%= link_to 'Edit', edit_clinician_path(clinician) %></td>
+        <td><%= link_to 'Destroy', clinician, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Clinician', new_clinician_path %>
+
+<br>
+
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+
+
+<br>
+
+
+<script type="text/javascript">
+
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers(<%=raw @hash.to_json %>);
+        handler.map.centerOn(markers[0]); 
+        handler.fitMapToBounds();
+        handler.getMap().setZoom(12);
+        
+    });
+</script>

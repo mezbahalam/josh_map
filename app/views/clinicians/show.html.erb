@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @clinician.address %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @clinician.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @clinician.longitude %>
+</p>
+
+
+<h3> Addresses </h3>
+<ul>
+<% for clinician in @clinician.nearbys(10) %>
+	<li> <%= link_to clinician.address, clinician %> </li> (<%= clinician.distance.round(2) %> miles) </li>
+<% end %>
+
+</ul>
+
+
+
+<%= link_to 'Edit', edit_clinician_path(@clinician) %> |
+<%= link_to 'Back', clinicians_path %>
